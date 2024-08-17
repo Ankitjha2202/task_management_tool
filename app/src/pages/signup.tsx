@@ -1,7 +1,9 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { supabase } from '../lib/supabaseClient'; // Adjust the path to your supabaseClient
-import { FaEnvelope, FaLock, FaUser, FaUserPlus } from 'react-icons/fa';
+import { supabase } from '../lib/supabaseClient';
+import { FaEnvelope, FaLock, FaUser, FaUserPlus, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import axios from 'axios';
+import { showError } from 'appUtils/showError';
 
 const Signup: FC = () => {
   const [name, setName] = useState<string>('');
@@ -10,12 +12,13 @@ const Signup: FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showTerms, setShowTerms] = useState<boolean>(false); 
+  const [message, setMessage] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic validation
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -24,19 +27,36 @@ const Signup: FC = () => {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signUp({
+    // Sign up with Supabase
+    const { error: signUpError, data: signUpData } = await supabase.auth.signUp({
       email,
       password,
     });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      // Optionally, handle user profile creation or redirect
-      router.push('/login');
+    if (signUpError) {
+      setError(signUpError.message);
+      setLoading(false);
+      return;
     }
 
-    setLoading(false);
+    setMessage('Please check your email to confirm your account.');
+
+    // Insert the user into the Prisma database
+    try {
+      const res = await axios.post('/api/users/create', {
+        id: signUpData.user?.id,
+        email,
+        name,
+      });
+
+      router.push('/login');
+    } catch (apiError) {
+      showError('Failed to create task. Please try again.');
+      setError('Failed to save user data');
+      console.error('API error:', apiError);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -137,9 +157,48 @@ const Signup: FC = () => {
               className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
             />
             <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
-              I agree to the <a href="#" className="font-medium text-green-600 hover:text-green-500">Terms and Conditions</a>
+              I agree to the{' '}
+              <button
+                type="button"
+                className="font-medium text-green-600 hover:text-green-500"
+                onClick={() => setShowTerms(!showTerms)}
+              >
+                Terms and Conditions
+                {showTerms ? <FaChevronUp className="ml-1 inline" /> : <FaChevronDown className="ml-1 inline" />}
+              </button>
             </label>
           </div>
+
+          {showTerms && (
+            <div className="mt-4 p-4 border border-gray-300 rounded-md text-sm text-gray-700 bg-gray-50">
+              <h2 className="text-lg font-bold mb-2">Terms and Conditions</h2>
+              <p className="mb-2">
+                Welcome to our application. These terms and conditions outline the rules and regulations for the use of our application.
+                By accessing this website, we assume you accept these terms and conditions. Do not continue to use the application if you
+                do not agree to all of the terms and conditions stated on this page.
+              </p>
+              <h3 className="font-semibold mb-1">License</h3>
+              <p className="mb-2">
+                Unless otherwise stated, we own the intellectual property rights for all material on the application. All intellectual
+                property rights are reserved. You may access this from the application for your own personal use subjected to restrictions
+                set in these terms and conditions.
+              </p>
+              <h3 className="font-semibold mb-1">User Comments</h3>
+              <p className="mb-2">
+                Certain parts of this application offer the opportunity for users to post and exchange opinions and information in certain
+                areas of the website. We do not filter, edit, publish or review Comments prior to their presence on the website. Comments
+                do not reflect the views and opinions of our company, its agents, and/or affiliates. Comments reflect the views and opinions
+                of the person who posts their views and opinions. To the extent permitted by applicable laws, our company shall not be liable
+                for the Comments or for any liability, damages, or expenses caused and/or suffered as a result of any use of and/or posting
+                of and/or appearance of the Comments on this website.
+              </p>
+              <h3 className="font-semibold mb-1">Governing Law</h3>
+              <p>
+                These terms and conditions are governed by and construed in accordance with the laws of the country and you irrevocably submit
+                to the exclusive jurisdiction of the courts in that State or location.
+              </p>
+            </div>
+          )}
 
           <div>
             <button
@@ -154,12 +213,6 @@ const Signup: FC = () => {
             </button>
           </div>
         </form>
-        <div className="text-sm text-center">
-          <span className="text-gray-600">Already have an account? </span>
-          <a href="/login" className="font-medium text-green-600 hover:text-green-500">
-            Sign in
-          </a>
-        </div>
       </div>
     </div>
   );
