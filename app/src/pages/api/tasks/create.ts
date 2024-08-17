@@ -1,19 +1,16 @@
-// src/pages/api/tasks/create.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabase } from '~/lib/supabaseClient';
 
 const createTask = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
-      const { title, description, status, priority, due_date, user_id } = req.body;
-      console.log(user_id)
-      // Validate user_id is provided
-      if (!user_id) {
-        throw new Error('User ID is required');
+      const { title, description, status, priority, due_date, user_email } = req.body;
+
+      if (!title || !status || !priority || !user_email) {
+        return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      // Insert the task into the database
-      const { error: insertError } = await supabase
+      const { data, error: insertError } = await supabase
         .from('tasks')
         .insert({
           title,
@@ -21,17 +18,22 @@ const createTask = async (req: NextApiRequest, res: NextApiResponse) => {
           status,
           priority,
           due_date,
-          user_id, // Use the user ID from the request body
-        });
+          user_email,
+        })
+        .select();
 
       if (insertError) {
-        throw insertError;
+        console.error('Task insertion error:', insertError);
+        if (insertError.code === '23505') {
+          return res.status(409).json({ error: 'A task with this description already exists' });
+        }
+        return res.status(500).json({ error: 'Failed to create task' });
       }
 
-      res.status(200).json({ message: 'Task created successfully' });
+      res.status(200).json({ message: 'Task created successfully', task: data[0] });
     } catch (error: any) {
       console.error('Error creating task:', error.message);
-      res.status(500).json({ error: 'Failed to create task' });
+      res.status(500).json({ error: 'An unexpected error occurred' });
     }
   } else {
     res.setHeader('Allow', ['POST']);
