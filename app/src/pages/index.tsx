@@ -17,7 +17,6 @@ const Home: FC = () => {
             {[
               { href: "/login", text: "Login", color: "bg-blue-500 hover:bg-blue-600" },
               { href: "/signup", text: "Sign Up", color: "bg-green-500 hover:bg-green-600" },
-              { href: "/dashboard", text: "View Dashboard", color: "bg-gray-500 hover:bg-gray-600" }
             ].map((link, index) => (
               <Link href={link.href} key={index}>
                 <span className={`
