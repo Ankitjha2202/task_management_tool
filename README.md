@@ -1,6 +1,6 @@
 # TaskManagementApp
 
-ProjectManagementApp is a comprehensive task management platform designed to streamline project management activities, from task creation to tracking and assignment. Built with the T3 stack, this application integrates a modern frontend built with Next.js and Tailwind CSS, a serverless backend powered by SST on AWS, and a robust database using Supabase.
+TaskManagementApp is a comprehensive task management platform designed to streamline project management activities, from task creation to tracking and assignment. Built with the T3 stack, this application integrates a modern frontend built with Next.js and Tailwind CSS, a serverless backend powered by SST on AWS, and a robust database using Supabase.
 
 ## Features
 
