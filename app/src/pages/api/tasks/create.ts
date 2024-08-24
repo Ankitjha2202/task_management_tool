@@ -4,9 +4,9 @@ import { supabase } from '~/lib/supabaseClient';
 const createTask = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
-      const { title, description, status, priority, due_date, user_email } = req.body;
+      const { title, description, status, priority, due_date, user_email, team_members } = req.body;
 
-      if (!title || !status || !priority || !user_email) {
+      if (!title || !status || !priority || !user_email || !Array.isArray(team_members)) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -19,6 +19,7 @@ const createTask = async (req: NextApiRequest, res: NextApiResponse) => {
           priority,
           due_date,
           user_email,
+          team_members, // Add team members to the insertion
         })
         .select();
 

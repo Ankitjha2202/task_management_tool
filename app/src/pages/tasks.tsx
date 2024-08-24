@@ -14,6 +14,7 @@ interface Task {
   status: string;
   priority: string;
   due_date: string | null;
+  team_members: string[] | null;  // Updated interface
 }
 
 const formatDate = (dateString: string | null): string => {
@@ -47,7 +48,7 @@ const Tasks: FC = () => {
 
         const { data: tasksData, error: tasksError } = await supabase
           .from('tasks')
-          .select('id, title, description, status, priority, due_date')
+          .select('id, title, description, status, priority, due_date, team_members')  // Updated query
           .eq('user_email', fetchedUser.email);
 
         if (tasksError) throw tasksError;
@@ -109,6 +110,18 @@ const Tasks: FC = () => {
                   {expandedTaskId === task.id && (
                     <div className="mt-4 text-gray-600 bg-gray-50 p-4 rounded-md">
                       <p>{task.description || 'No description available.'}</p>
+                      {task.team_members && task.team_members.length > 0 && (
+                        <div className="mt-4">
+                          <p className="text-md text-gray-700 mb-2">Team Members:</p>
+                          <ul className="list-disc list-inside">
+                            {task.team_members.map((member, index) => (
+                              <li key={index} className="text-gray-700">
+                                {member}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -10,15 +10,16 @@ generator client {
 }
 
 model Task {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String?
-  status      String
-  priority    String
-  due_date    DateTime?
-  created_at  DateTime  @default(now())
-  user_email  String
-  user        AppUser   @relation(fields: [user_email], references: [email])
+  id           Int       @id @default(autoincrement())
+  title        String
+  description  String?
+  status       String
+  priority     String
+  due_date     DateTime?
+  created_at   DateTime  @default(now())
+  user_email   String
+  user         AppUser   @relation(fields: [user_email], references: [email])
+  team_members String[]  // This field stores the names of the team members as an array of strings.
   @@map("tasks")
 }
 

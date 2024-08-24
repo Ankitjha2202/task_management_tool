@@ -9,6 +9,7 @@ const CreateTask: FC = () => {
   const [status, setStatus] = useState('pending');
   const [priority, setPriority] = useState('low');
   const [dueDate, setDueDate] = useState<string | undefined>('');
+  const [teamMembers, setTeamMembers] = useState<string>(''); // New state for team members
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +40,7 @@ const CreateTask: FC = () => {
           priority,
           due_date: dueDate,
           user_email: userEmail,
+          team_members: teamMembers.split(',').map(member => member.trim()), // Split and trim team members
         }),
       });
 
@@ -62,6 +64,7 @@ const CreateTask: FC = () => {
     setStatus('pending');
     setPriority('low');
     setDueDate('');
+    setTeamMembers(''); // Reset team members
   };
 
   return (
@@ -130,6 +133,18 @@ const CreateTask: FC = () => {
               <option value="in-progress">In Progress</option>
               <option value="completed">Completed</option>
             </select>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="team_members" className="block text-blue-700 font-bold mb-2">Team Members</label>
+            <input
+              type="text"
+              id="team_members"
+              name="team_members"
+              value={teamMembers}
+              onChange={(e) => setTeamMembers(e.target.value)}
+              placeholder="Enter team member names, separated by commas"
+              className="w-full px-3 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
           <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 transform hover:scale-105">
             Create Task
