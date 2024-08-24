@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
 import { User as SupabaseUser } from '@supabase/supabase-js';
+import toast from 'react-hot-toast';
 
-interface User extends SupabaseUser {
- 
-}
+interface User extends SupabaseUser {}
 
 const Dashboard: FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -26,6 +25,7 @@ const Dashboard: FC = () => {
         setUser(fetchedUser as User);
       } catch (error: any) {
         setError('Failed to load data. Please try again later.');
+        showError('Failed to load data. Please try again later.'); // Display error notification
         console.log("This is error", error);
       } finally {
         setLoading(false);
@@ -35,9 +35,17 @@ const Dashboard: FC = () => {
   }, [router]);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
+    try {
+      await supabase.auth.signOut();
+      showSuccess('Successfully logged out'); // Display success notification
+      router.push('/login');
+    } catch (error: any) {
+      showError('Failed to log out. Please try again later.'); // Display error notification
+    }
   };
+
+  const showError = (msg: string) => toast.error(msg);
+  const showSuccess = (msg: string) => toast.success(msg);
 
   if (loading) {
     return (
@@ -123,17 +131,14 @@ const Dashboard: FC = () => {
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                   </a>
                   <a href="#" className="text-gray-600 hover:text-indigo-600 transition duration-300">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.16a4.927 4.927 0 001.527 6.564c-.828-.026-1.607-.254-2.287-.635v.063c0 2.234 1.586 4.09 3.686 4.51a4.968 4.968 0 01-2.21.084c.628 1.958 2.445 3.38 4.597 3.418a9.97 9.97 0 01-6.207 2.143c-.405 0-.803-.023-1.197-.07a14.056 14.056 0 007.548 2.211c9.057 0 14.027-7.51 14.027-14.027 0-.21-.004-.42-.014-.63A10.036 10.036 0 0024 4.59a9.97 9.97 0 01-2.067.572z"/></svg>
                   </a>
                   <a href="#" className="text-gray-600 hover:text-indigo-600 transition duration-300">
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.248c-5.284 0-9.568 4.473-9.568 9.57s4.284 9.57 9.568 9.57c5.284 0 9.568-4.473 9.568-9.57S17.284 2.248 12 2.248zm0 16.063c-3.512 0-6.375-2.864-6.375-6.375s2.863-6.375 6.375-6.375 6.375 2.863 6.375 6.375-2.863 6.375-6.375 6.375zm0-10.188a3.963 3.963 0 00-3.963 3.963 3.963 3.963 0 003.963 3.963 3.963 3.963 0 003.963-3.963 3.963 3.963 0 00-3.963-3.963z"/></svg>
                   </a>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="border-t border-gray-200 mt-6 pt-6 text-center">
-            <p className="text-gray-600">© 2024 Task Manager. All rights reserved.</p>
           </div>
         </div>
       </footer>
