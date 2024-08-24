@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabaseClient';
 import { FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa';
 import axios from 'axios';
 import { showError } from 'appUtils/showError';
+import { showSuccess } from 'appUtils/showSuccess';
 
 const Signup: FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -19,6 +20,13 @@ const Signup: FC = () => {
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      showError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      showError('Password must be at least 6 characters long');
       return;
     }
 
@@ -36,15 +44,16 @@ const Signup: FC = () => {
       if (!signUpData.user || !signUpData.user.email) throw new Error('No user data returned from Supabase');
 
       setMessage('Please check your email to confirm your account.');
+      showSuccess('Please check your email to confirm your account.');
 
       await axios.post('/api/users/create', {
         email: signUpData.user.email,
       });
 
       router.push('/login');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Signup error:', error);
-      showError('Failed to create user. Please try again.');
+      showError(error.message || 'Failed to create user. Please try again.');
       setError('Failed to create user');
     } finally {
       setLoading(false);
@@ -136,6 +145,14 @@ const Signup: FC = () => {
             </button>
           </div>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Already have an account?{' '}
+            <a href="/login" className="text-green-600 hover:text-green-800">
+              Log in
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

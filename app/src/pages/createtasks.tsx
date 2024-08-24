@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
-import { showError } from 'appUtils/showError';
-import { showSuccess } from 'appUtils/showSuccess';
+import toast from 'react-hot-toast';
 import { supabase } from '~/lib/supabaseClient';
 
 const CreateTask: FC = () => {
@@ -10,25 +9,21 @@ const CreateTask: FC = () => {
   const [status, setStatus] = useState('pending');
   const [priority, setPriority] = useState('low');
   const [dueDate, setDueDate] = useState<string | undefined>('');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
-    setSuccessMessage(null);
 
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
-      
+
       if (userError || !user) {
-        setErrorMessage('Failed to retrieve user information');
+        toast.error('Failed to retrieve user information');
         return;
       }
 
       const userEmail = user.email;
       if (!userEmail) {
-        setErrorMessage('User email not found');
+        toast.error('User email not found');
         return;
       }
 
@@ -53,11 +48,11 @@ const CreateTask: FC = () => {
         throw new Error(data.error || 'Failed to create task');
       }
 
-      setSuccessMessage('Task successfully created!');
+      toast.success('Task successfully created!');
       resetForm();
     } catch (error: any) {
       console.error('Error creating task:', error);
-      setErrorMessage(error.message || 'Failed to create task. Please try again.');
+      toast.error(error.message || 'Failed to create task. Please try again.');
     }
   };
 
@@ -69,23 +64,10 @@ const CreateTask: FC = () => {
     setDueDate('');
   };
 
-
   return (
     <div className="min-h-screen bg-blue-50 p-8">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-blue-600">Create New Task</h2>
-        {errorMessage && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong className="font-bold">Error: </strong>
-            <span className="block sm:inline">{errorMessage}</span>
-          </div>
-        )}
-        {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-            <strong className="font-bold">Success: </strong>
-            <span className="block sm:inline">{successMessage}</span>
-          </div>
-        )}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="title" className="block text-blue-700 font-bold mb-2">Title</label>

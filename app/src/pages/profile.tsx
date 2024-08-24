@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
 import { User } from '@supabase/supabase-js';
+import { showSuccess } from 'appUtils/showSuccess';
 
 interface Profile {
   firstName: string;
@@ -103,7 +104,7 @@ const Profile: FC = () => {
       }
   
       const result = await response.json();
-      alert(result.message);
+      showSuccess(result.message)
     } catch (err) {
       console.error("Error updating profile:", err);
     } finally {
@@ -166,12 +167,12 @@ const Profile: FC = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="bio" className="block text-gray-700 font-bold mb-2">Bio</label>
+          <label htmlFor="bio" className="block text-gray-700 font-bold mb-2">Bio</label>
             <textarea 
               id="bio" 
               name="bio" 
               rows={4} 
-              value={profile.bio}
+              value={profile.bio ?? ''}  
               onChange={(e) => setProfile({...profile, bio: e.target.value})}
               className="w-full px-3 py-2 border rounded-lg"
             ></textarea>
