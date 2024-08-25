@@ -5,17 +5,22 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 ![Project Diagram](https://i.postimg.cc/8c5FDRhs/Image-25-08-24-at-12-52-AM.jpg)
 
 ## Features
+
 ### 1. Task Management Interface
+
 - **Task Creation:** Easily create tasks with detailed descriptions.
 - **Assignment:** Assign tasks to team members, set deadlines, and prioritize with tags.
 - **Tracking:** Monitor task progress and ensure timely completion.
 ![Project Main](https://i.postimg.cc/QM9Bk9GT/Image-25-08-24-at-8-33-PM.jpg)
 ![Task Creation](https://i.postimg.cc/QCBnjJRM/Image-25-08-24-at-8-40-PM.jpg)
 ![Project Task](https://i.postimg.cc/t4PQ3pvg/Image-25-08-24-at-8-31-PM.jpg)
+
 ### 2. User Profile and Project Settings
+
 - **User Profile:** Allows team members to manage their personal information and preferences.
 - **Project Settings:** Customize project-specific settings to suit team needs.
-![Profile](https://i.postimg.cc/qBCPVk0x/Image-25-08-24-at-8-46-PM.jpg)
+![Profile Settins](https://i.postimg.cc/HLDJzWpv/Image-25-08-24-at-8-56-PM.jpg)
+
 ## Tech Stack
 
 - **Frontend:** Next.js, Tailwind CSS
@@ -47,12 +52,13 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 
 1. **Create a `.env` file in the root directory.**
 
-2. **Add your Supabase and AWS credentials to the `.env` file.** The file should include entries like:
+2. **Add your Supabase, AWS, and Prisma database credentials to the `.env` file:**
     ```env
     NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-url.supabase.co
     NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
     AWS_ACCESS_KEY_ID=your-access-key-id
     AWS_SECRET_ACCESS_KEY=your-secret-access-key
+    DATABASE_URL=postgresql://user:password@localhost:5432/mydatabase
     ```
 
 ### Install Dependencies
@@ -64,6 +70,25 @@ TaskManagementApp is a comprehensive task management platform designed to stream
     or, if using Yarn:
     ```bash
     yarn install
+    ```
+
+### Set Up Prisma
+
+1. **Initialize Prisma:**
+    ```bash
+    npx prisma init
+    ```
+
+2. **Migrate the Database:**
+    Run the migration to set up the database schema:
+    ```bash
+    npx prisma migrate dev --name init
+    ```
+
+3. **Generate Prisma Client:**
+    Generate the Prisma client to interact with the database:
+    ```bash
+    npx prisma generate
     ```
 
 ### Run the Development Server
