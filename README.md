@@ -15,7 +15,7 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 ### 2. User Profile and Project Settings
 - **User Profile:** Allows team members to manage their personal information and preferences.
 - **Project Settings:** Customize project-specific settings to suit team needs.
-![Profile](https://i.postimg.cc/G2m55CKG/Image-25-08-24-at-8-41-PM.jpg)
+![Profile](https://i.postimg.cc/qBCPVk0x/Image-25-08-24-at-8-46-PM.jpg)
 ## Tech Stack
 
 - **Frontend:** Next.js, Tailwind CSS
