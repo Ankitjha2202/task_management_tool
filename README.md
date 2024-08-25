@@ -21,6 +21,7 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 - **Backend:** SST (Serverless Stack) on AWS
 - **Database:** Supabase with Prisma ORM
 - **Authentication:** Supabase Authentication
+- **Testing:** Cypress for end-to-end testing
 
 ## Installation
 
@@ -78,37 +79,31 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 2. **Access the application:**
     Open `http://localhost:3000` in your browser.
 
-## Usage
+## Testing with Cypress
 
-### Task Management
+Cypress is used for end-to-end testing in this project. In addition to testing the main user interface, I have also added tests for utility functions found in the `appUtils` folder.
 
-- **Create Tasks:** Use the interface to create new tasks with descriptions.
-- **Assign Tasks:** Assign tasks to team members, set deadlines, and add tags.
-- **Track Progress:** Monitor the status of tasks and ensure they are completed on time.
+### Tests for `appUtils`
 
-### User Profile
+The `appUtils` folder contains important utility functions like `showSuccess` and `showError`. These functions are used to display success and error messages throughout the application. Here’s how you can run the tests:
 
-- **Update Information:** Modify your personal details and preferences.
-- **Manage Settings:** Adjust user-specific settings.
+### Install Cypress
 
-### Project Settings
+1. **Install Cypress as a development dependency:**
+    ```bash
+    npm install cypress --save-dev
+    ```
+    or, if using Yarn:
+    ```bash
+    yarn add cypress --dev
+    ```
 
-- **Customize Settings:** Modify project-specific configurations to fit team needs.
+### Run Cypress Tests
 
-## Code Examples
+1. **Open Cypress Test Runner:**
+    ```bash
+    npx cypress open
+    ```
 
-### Task Creation Example
-
-```javascript
-// Example function to create a task
-async function createTask(taskData) {
-    const response = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(taskData),
-    });
-    const data = await response.json();
-    return data;
-}
+2. **Run all tests:**
+    The Test Runner will display all available tests, including those for the `appUtils` functions. Click on any test to run it.
