@@ -27,7 +27,7 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 - **Backend:** SST (Serverless Stack) on AWS
 - **Database:** Supabase with Prisma ORM
 - **Authentication:** Supabase Authentication
-- **Testing:** Cypress for end-to-end testing
+- **Testing:** Cypress for Unit testing
 
 ## Installation
 
