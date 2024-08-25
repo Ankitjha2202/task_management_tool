@@ -1,12 +1,13 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
 import { FaEnvelope, FaLock, FaUserPlus } from 'react-icons/fa';
 import axios from 'axios';
 import { showError } from 'appUtils/showError';
 import { showSuccess } from 'appUtils/showSuccess';
+import Link from 'next/link'; // Import Link for navigation
 
-const Signup: FC = () => {
+const Signup = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -41,7 +42,7 @@ const Signup: FC = () => {
 
       if (signUpError) throw signUpError;
 
-      if (!signUpData.user || !signUpData.user.email) throw new Error('No user data returned from Supabase');
+      if (!signUpData.user?.email) throw new Error('No user data returned from Supabase');
 
       setMessage('Please check your email to confirm your account.');
       showSuccess('Please check your email to confirm your account.');
@@ -50,11 +51,13 @@ const Signup: FC = () => {
         email: signUpData.user.email,
       });
 
-      router.push('/login');
-    } catch (error: any) {
-      console.error('Signup error:', error);
-      showError(error.message || 'Failed to create user. Please try again.');
-      setError('Failed to create user');
+      await router.push('/login');
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Signup error:', error);
+        showError(error.message || 'Failed to create user. Please try again.');
+        setError('Failed to create user');
+      }
     } finally {
       setLoading(false);
     }
@@ -148,9 +151,9 @@ const Signup: FC = () => {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
-            <a href="/login" className="text-green-600 hover:text-green-800">
+            <Link href="/login" className="text-green-600 hover:text-green-800">
               Log in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

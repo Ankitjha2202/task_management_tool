@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Link from 'next/link';
 
 const Home: FC = () => {
@@ -18,17 +18,17 @@ const Home: FC = () => {
               { href: "/login", text: "Login", color: "bg-blue-500 hover:bg-blue-600" },
               { href: "/signup", text: "Sign Up", color: "bg-green-500 hover:bg-green-600" },
             ].map((link, index) => (
-              <Link href={link.href} key={index}>
-                <span className={`
-                  px-8 py-3 text-lg font-medium rounded-md text-white
-                  ${link.color}
-                  transition duration-300 ease-in-out
-                  transform hover:scale-105 cursor-pointer
-                  shadow-md hover:shadow-lg
-                  flex items-center justify-center
-                `}>
+              <Link  className={`
+              px-8 py-3 text-lg font-medium rounded-md text-white
+              ${link.color}
+              transition duration-300 ease-in-out
+              transform hover:scale-105 cursor-pointer
+              shadow-md hover:shadow-lg
+              flex items-center justify-center
+            `} href={link.href} key={index}>
+               
                   {link.text}
-                </span>
+              
               </Link>
             ))}
           </div>

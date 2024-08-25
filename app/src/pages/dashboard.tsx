@@ -25,7 +25,7 @@ const Dashboard: FC = () => {
         setUser(fetchedUser as User);
       } catch (error: any) {
         setError('Failed to load data. Please try again later.');
-        showError('Failed to load data. Please try again later.'); // Display error notification
+        showError('Failed to load data. Please try again later.'); 
         console.log("This is error", error);
       } finally {
         setLoading(false);
@@ -37,10 +37,10 @@ const Dashboard: FC = () => {
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
-      showSuccess('Successfully logged out'); // Display success notification
+      showSuccess('Successfully logged out');
       router.push('/login');
     } catch (error: any) {
-      showError('Failed to log out. Please try again later.'); // Display error notification
+      showError('Failed to log out. Please try again later.');
     }
   };
 
