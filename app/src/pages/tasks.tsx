@@ -1,11 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { supabase } from '../lib/supabaseClient';
-import { User as SupabaseUser } from '@supabase/supabase-js';
 import { ClipLoader } from 'react-spinners';
-
-interface User extends SupabaseUser {}
 
 interface Task {
   id: number;
@@ -14,7 +12,7 @@ interface Task {
   status: string;
   priority: string;
   due_date: string | null;
-  team_members: string[] | null;  // Updated interface
+  team_members: string[] | null; // Updated interface
 }
 
 const formatDate = (dateString: string | null): string => {
@@ -28,7 +26,6 @@ const formatDate = (dateString: string | null): string => {
 };
 
 const Tasks: FC = () => {
-  const [user, setUser] = useState<User | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,23 +41,24 @@ const Tasks: FC = () => {
           router.push('/login');
           return;
         }
-        setUser(fetchedUser as User);
 
         const { data: tasksData, error: tasksError } = await supabase
           .from('tasks')
-          .select('id, title, description, status, priority, due_date, team_members')  // Updated query
+          .select('id, title, description, status, priority, due_date, team_members') // Updated query
           .eq('user_email', fetchedUser.email);
 
         if (tasksError) throw tasksError;
-        setTasks(tasksData);
-      } catch (error: any) {
-        setError('Failed to load data. Please try again later.');
-        console.log('This is error', error);
+        setTasks(tasksData ?? []);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError('Failed to load data. Please try again later.');
+          console.log('This is error', error.message);
+        }
       } finally {
         setLoading(false);
       }
     }
-    fetchData();
+    fetchData().catch((err) => console.error('Fetch data error:', err));
   }, [router]);
 
   const handleToggleDescription = (taskId: number) => {
@@ -109,7 +107,7 @@ const Tasks: FC = () => {
                   </button>
                   {expandedTaskId === task.id && (
                     <div className="mt-4 text-gray-600 bg-gray-50 p-4 rounded-md">
-                      <p>{task.description || 'No description available.'}</p>
+                      <p>{task.description ?? 'No description available.'}</p>
                       {task.team_members && task.team_members.length > 0 && (
                         <div className="mt-4">
                           <p className="text-md text-gray-700 mb-2">Team Members:</p>

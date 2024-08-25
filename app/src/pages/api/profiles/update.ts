@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
-import { supabase } from '~/lib/supabaseClient';
 
 const prisma = new PrismaClient();
 
@@ -15,18 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Fetch the user's session to ensure they're authenticated
-    // const { data: { session }, error: authError } = await supabase.auth.getSession();
-    // if (authError || !session) {
-    //   return res.status(401).json({ message: 'Unauthorized' });
-    // }
-
-    // // Ensure the authenticated user is updating their own profile
-    // if (session.user.email !== user_email) {
-    //   return res.status(403).json({ message: 'Forbidden' });
-    // }
-
-    // Update the profile using Prisma
     const updatedProfile = await prisma.profile.update({
       where: {
         user_email: user_email,

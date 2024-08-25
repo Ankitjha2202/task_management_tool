@@ -9,7 +9,7 @@ const CreateTask: FC = () => {
   const [status, setStatus] = useState('pending');
   const [priority, setPriority] = useState('low');
   const [dueDate, setDueDate] = useState<string | undefined>('');
-  const [teamMembers, setTeamMembers] = useState<string>(''); // New state for team members
+  const [teamMembers, setTeamMembers] = useState<string>(''); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +40,7 @@ const CreateTask: FC = () => {
           priority,
           due_date: dueDate,
           user_email: userEmail,
-          team_members: teamMembers.split(',').map(member => member.trim()), // Split and trim team members
+          team_members: teamMembers.split(',').map(member => member.trim()),
         }),
       });
 
@@ -64,7 +64,7 @@ const CreateTask: FC = () => {
     setStatus('pending');
     setPriority('low');
     setDueDate('');
-    setTeamMembers(''); // Reset team members
+    setTeamMembers(''); 
   };
 
   return (
