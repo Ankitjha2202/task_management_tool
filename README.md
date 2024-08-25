@@ -1,22 +1,21 @@
 # TaskManagementApp
 
-![Project Diagram](https://i.postimg.cc/8c5FDRhs/Image-25-08-24-at-12-52-AM.jpg)
-
 TaskManagementApp is a comprehensive task management platform designed to streamline project management activities, from task creation to tracking and assignment. Built with the T3 stack, this application integrates a modern frontend built with Next.js and Tailwind CSS, a serverless backend powered by SST on AWS, and a robust database using Supabase.
 
+![Project Diagram](https://i.postimg.cc/8c5FDRhs/Image-25-08-24-at-12-52-AM.jpg)
+
 ## Features
-![Project Main](https://i.postimg.cc/QM9Bk9GT/Image-25-08-24-at-8-33-PM.jpg)
-![Task Creation](https://i.postimg.cc/QCBnjJRM/Image-25-08-24-at-8-40-PM.jpg)
-![Project Task](https://i.postimg.cc/t4PQ3pvg/Image-25-08-24-at-8-31-PM.jpg)
 ### 1. Task Management Interface
 - **Task Creation:** Easily create tasks with detailed descriptions.
 - **Assignment:** Assign tasks to team members, set deadlines, and prioritize with tags.
 - **Tracking:** Monitor task progress and ensure timely completion.
-![Profile](https://i.postimg.cc/G2m55CKG/Image-25-08-24-at-8-41-PM.jpg)
+![Project Main](https://i.postimg.cc/QM9Bk9GT/Image-25-08-24-at-8-33-PM.jpg)
+![Task Creation](https://i.postimg.cc/QCBnjJRM/Image-25-08-24-at-8-40-PM.jpg)
+![Project Task](https://i.postimg.cc/t4PQ3pvg/Image-25-08-24-at-8-31-PM.jpg)
 ### 2. User Profile and Project Settings
 - **User Profile:** Allows team members to manage their personal information and preferences.
 - **Project Settings:** Customize project-specific settings to suit team needs.
-
+![Profile](https://i.postimg.cc/G2m55CKG/Image-25-08-24-at-8-41-PM.jpg)
 ## Tech Stack
 
 - **Frontend:** Next.js, Tailwind CSS
