@@ -19,7 +19,7 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 
 - **User Profile:** Allows team members to manage their personal information and preferences.
 - **Project Settings:** Customize project-specific settings to suit team needs.
-![Profile Settins](https://i.postimg.cc/HLDJzWpv/Image-25-08-24-at-8-56-PM.jpg)
+![Profile Settings](https://i.postimg.cc/HLDJzWpv/Image-25-08-24-at-8-56-PM.jpg)
 
 ## Tech Stack
 
@@ -104,6 +104,10 @@ TaskManagementApp is a comprehensive task management platform designed to stream
 
 2. **Access the application:**
     Open `http://localhost:3000` in your browser.
+
+## Deployed Site
+
+The application is deployed using AWS and SST. You can access the live version of the application at [https://d1mz4vajeg025u.cloudfront.net/](https://d1mz4vajeg025u.cloudfront.net/).
 
 ## Testing with Cypress
 
